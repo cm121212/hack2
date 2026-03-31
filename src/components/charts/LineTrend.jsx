@@ -166,7 +166,7 @@ export default function LineTrend({ data = [], color = '#22c55e', onPointClick }
               r={isHovered ? 5 : 3.5}
               fill={color}
               style={{ cursor: onPointClick ? 'pointer' : 'default', transition: 'r 0.15s ease' }}
-              onClick={(e) => { e.stopPropagation(); onPointClick && onPointClick(displayData[i], i); }}
+              onClick={(e) => { e.stopPropagation(); onPointClick && onPointClick(displayData[i], (zoomRange ? zoomRange[0] : 0) + i); }}
             />
           );
         })}

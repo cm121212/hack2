@@ -9,7 +9,7 @@ export default function PanelCard({ panel }) {
   const { title, status, metrics, chartType, chartProps, tableHeaders, tableRows } = panel;
   const [drillDown, setDrillDown] = useState(null);
 
-  const handleBarClick = (dataPoint) => {
+  const handleDrillDown = (dataPoint) => {
     setDrillDown({ label: dataPoint.label, value: dataPoint.value });
   };
 
@@ -35,8 +35,8 @@ export default function PanelCard({ panel }) {
           <ChartRenderer
             chartType={chartType}
             chartProps={chartProps}
-            onBarClick={handleBarClick}
-            onPointClick={handleBarClick}
+            onBarClick={handleDrillDown}
+            onPointClick={handleDrillDown}
           />
         </div>
         {/* Table area - smaller */}

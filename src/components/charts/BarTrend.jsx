@@ -51,7 +51,7 @@ export default function BarTrend({ data = [], color = '#3b82f6', onBarClick }) {
       {data.map((d, i) => {
         const barH = (d.value / max) * chartH;
         const x = padLeft + i * gap + (gap - barW) / 2;
-        const y = padTop + chartH - (animate ? barH : 0);
+        const yFinal = padTop + chartH - barH;
         const isHovered = hoveredIdx === i;
         return (
           <g
@@ -63,13 +63,13 @@ export default function BarTrend({ data = [], color = '#3b82f6', onBarClick }) {
           >
             <rect
               x={x}
-              y={y}
+              y={animate ? yFinal : padTop + chartH}
               width={barW}
               height={animate ? barH : 0}
               fill={color}
               rx="2"
               opacity={isHovered ? 1 : 0.85}
-              style={{ transition: 'height 0.25s ease, y 0.25s ease, opacity 0.15s ease' }}
+              style={{ transition: 'height 0.25s ease, opacity 0.15s ease' }}
             />
             {isHovered && (
               <rect x={x} y={padTop} width={barW} height={chartH} rx="2" fill={color} opacity="0.07" style={{ pointerEvents: 'none' }} />
