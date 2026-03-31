@@ -74,6 +74,9 @@ export function checkThreshold(metricTitle, metricValue, thresholds) {
   return null;
 }
 
+// Maximum number of alert history entries to retain (keeps memory and localStorage usage bounded)
+const MAX_ALERT_HISTORY = 100;
+
 /**
  * Scan all customerData and return every metric that breaches a threshold.
  */
@@ -111,7 +114,15 @@ export function AlertProvider({ children }) {
   const [thresholds, setThresholds] = useState(() => {
     try {
       const saved = localStorage.getItem('dashboardThresholds');
-      return saved ? { ...DEFAULT_THRESHOLDS, ...JSON.parse(saved) } : DEFAULT_THRESHOLDS;
+      if (!saved) return DEFAULT_THRESHOLDS;
+      const parsed = JSON.parse(saved);
+      // Only keep keys that still exist in DEFAULT_THRESHOLDS to avoid stale entries;
+      // merge saved values over defaults so new metrics always appear.
+      const merged = { ...DEFAULT_THRESHOLDS };
+      Object.keys(DEFAULT_THRESHOLDS).forEach((key) => {
+        if (parsed[key]) merged[key] = { ...DEFAULT_THRESHOLDS[key], ...parsed[key] };
+      });
+      return merged;
     } catch {
       return DEFAULT_THRESHOLDS;
     }
@@ -143,7 +154,7 @@ export function AlertProvider({ children }) {
         .filter((a) => !existingIds.has(a.id))
         .map((a) => ({ ...a, timestamp: now }));
       if (newEntries.length === 0) return prev;
-      const updated = [...newEntries, ...prev].slice(0, 100);
+      const updated = [...newEntries, ...prev].slice(0, MAX_ALERT_HISTORY);
       localStorage.setItem('dashboardAlertHistory', JSON.stringify(updated));
       return updated;
     });

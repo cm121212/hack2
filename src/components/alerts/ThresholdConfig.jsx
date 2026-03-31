@@ -7,9 +7,11 @@ export default function ThresholdConfig({ onClose }) {
 
   const handleChange = (metricTitle, field, rawValue) => {
     const num = parseFloat(rawValue);
+    // Preserve previous valid value if input is empty/invalid
+    if (isNaN(num)) return;
     setLocal((prev) => ({
       ...prev,
-      [metricTitle]: { ...prev[metricTitle], [field]: isNaN(num) ? '' : num },
+      [metricTitle]: { ...prev[metricTitle], [field]: num },
     }));
   };
 

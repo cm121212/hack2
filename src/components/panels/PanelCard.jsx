@@ -61,8 +61,10 @@ export default function PanelCard({ panel }) {
 
   return (
     <div
-      className={`flex flex-col bg-white rounded-xl shadow-sm border-2 p-4 overflow-hidden transition-colors ${
-        panelAlertSeverity ? severityBorder[panelAlertSeverity] : 'border-slate-200'
+      className={`flex flex-col bg-white rounded-xl shadow-sm p-4 overflow-hidden transition-colors ${
+        panelAlertSeverity
+          ? `border-2 ${severityBorder[panelAlertSeverity]}`
+          : 'border border-slate-200'
       }`}
     >
       {/* Panel header */}
