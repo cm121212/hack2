@@ -17,8 +17,8 @@ const chartMap = {
   quarterProgress: QuarterProgress,
 };
 
-export default function ChartRenderer({ chartType, chartProps }) {
+export default function ChartRenderer({ chartType, chartProps, onBarClick, onPointClick }) {
   const Component = chartMap[chartType];
   if (!Component) return <div className="flex items-center justify-center h-full text-slate-400 text-sm">No chart</div>;
-  return <Component {...chartProps} />;
+  return <Component {...chartProps} onBarClick={onBarClick} onPointClick={onPointClick} />;
 }
